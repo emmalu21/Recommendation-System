@@ -1,15 +1,128 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Movie Recommender</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .page {
+      display: none;
+    }
+    .page.active {
+      display: block;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input, select, button {
+      padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  </style>
 </head>
 <body>
-    <h1>Rate a Movie</h1>
-    <form action="/rate" method="post">
-        User ID: <input type="text" name="user_id"><br>
-        Movie ID: <input type="text" name="movie_id"><br>
-        Rating: <input type="text" name="rating"><br>
-        <input type="submit" value="Submit">
+  <!-- Login Page -->
+  <div id="loginPage" class="page active">
+    <h1>Login</h1>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" required>
+      </div>
+      <button type="submit">Login</button>
     </form>
+  </div>
+
+  <!-- Movie Rating Page -->
+  <div id="movieRatingPage" class="page">
+    <h1>Rate a Movie</h1>
+    <form>
+      <div class="form-group">
+        <label for="movie">Movie Name:</label>
+        <input type="text" id="movie" required>
+      </div>
+      <div class="form-group">
+        <label for="rating">Rating (1 to 5):</label>
+        <select id="rating" required>
+          <option value="" disabled selected>Select a rating</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <button type="submit">Submit Rating</button>
+    </form>
+    <button onclick="switchPage('movieRequestPage')">Go to Movie Request</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <!-- Movie Request Page -->
+  <div id="movieRequestPage" class="page">
+    <h1>Request a Movie Recommendation</h1>
+    <form>
+      <div class="form-group">
+        <label for="genre">Genre:</label>
+        <input type="text" id="genre">
+      </div>
+      <div class="form-group">
+        <label for="actor">Actor:</label>
+        <input type="text" id="actor">
+      </div>
+      <div class="form-group">
+        <label for="director">Director:</label>
+        <input type="text" id="director">
+      </div>
+      <button type="submit">Request Recommendation</button>
+    </form>
+    <button onclick="switchPage('movieRatingPage')">Go to Movie Rating</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+    const pages = {
+      loginPage: document.getElementById('loginPage'),
+      movieRatingPage: document.getElementById('movieRatingPage'),
+      movieRequestPage: document.getElementById('movieRequestPage'),
+    };
+
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      if (username && password) { // Basic check for input
+        alert('Login Successful!');
+        switchPage('movieRatingPage');
+      } else {
+        alert('Please enter valid credentials.');
+      }
+    });
+
+    function switchPage(pageId) {
+      Object.keys(pages).forEach(id => pages[id].classList.remove('active'));
+      pages[pageId].classList.add('active');
+    }
+
+    function logout() {
+      alert('Logged out.');
+      switchPage('loginPage');
+    }
+  </script>
 </body>
 </html>
+
